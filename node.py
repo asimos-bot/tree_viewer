@@ -51,8 +51,8 @@ class Node():
         if( self.frame != None ): self._destroy()
 
         # create frame
-        self.frame = tkinter.Frame(master, borderwidth=1, highlightcolor='red')
-        self.frame.pack( side = direction)
+        self.frame = tkinter.Frame(master, highlightthickness=1, highlightcolor='green', highlightbackground='red', relief='raised', bd=0)
+        self.frame.pack( side = direction )
 
         # create label text
         self.label = tkinter.Label(self.frame, text=str(self.rule))

@@ -66,7 +66,7 @@ class Navbar():
 
         # get frame in the top
         frame = tkinter.Frame(self.tk)
-        frame.pack( side = tkinter.TOP )
+        frame.pack( side = tkinter.TOP, fill = tkinter.X )
 
         # build label in the center of the frame
         self._build_object_label(frame, None, None, None)
