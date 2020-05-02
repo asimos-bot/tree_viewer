@@ -31,6 +31,7 @@ class Node():
         else:
             rule.observed_class_distribution = node.get_observed_class_distribution().copy()
             rule.class_idx = max(node.get_observed_class_distribution().items(), key=itemgetter(1))[0]
+            rule = "cl" + str(rule)
             return rule
         
     def _build_subtree(self, node):
@@ -51,11 +52,11 @@ class Node():
         if( self.frame != None ): self._destroy()
 
         # create frame
-        self.frame = tkinter.Frame(master, highlightthickness=1, highlightcolor='green', highlightbackground='red', relief='raised', bd=0)
+        self.frame = tkinter.Frame(master, highlightthickness=1, highlightcolor='green', highlightbackground='red', relief='sunken', bd=0)
         self.frame.pack( side = direction )
 
         # create label text
-        self.label = tkinter.Label(self.frame, text=str(self.rule))
+        self.label = tkinter.Label(self.frame, text=self.rule)
         self.label.pack( side = tkinter.TOP )
 
         # build widget for each subtree

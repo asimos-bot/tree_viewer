@@ -65,13 +65,15 @@ class DataProvider():
 
     def previous_object(self):
 
-        for i in range(self.steps):
+        if( self.timestamp > 0 ):
 
-            # check if we aren't already showing the first object
-            if( not self.timestamp <= 0 ):
+            self.timestamp -= self.steps
 
-                self.timestamp -= 1
-                self.notify()
+            if( self.timestamp < 0 ):
+
+                self.timestamp = 0
+
+            self.notify()
 
     def subscribe_to_listening_list(self, obj):
 
@@ -103,7 +105,8 @@ class DataProvider():
         return {
                 'x': self.x.iloc[[self.timestamp]].to_numpy(),
                 'y': self.y.iloc[[self.timestamp]].to_numpy()[0],
-                'timestamp': self.timestamp }
+                'timestamp': self.timestamp
+               }
 
     def get_timestamp(self):
 
