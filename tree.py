@@ -1,5 +1,11 @@
 import tkinter
-from skmultiflow.trees import ExtremelyFastDecisionTreeClassifier
+import skmultiflow
+
+if( skmultiflow.__version__ == '0.4.1' ):
+    from skmultiflow.trees import HATT as TreeClass
+else:
+    from skmultiflow.trees import ExtremelyFastDecisionTreeClassifier as TreeClass
+
 from data_provider import DataProvider
 from node import Node
 
@@ -30,7 +36,7 @@ class Tree():
         self.current_timestamp = -1
 
         # get the actual ExtremlyFastDecisionTreeClassifier here
-        self.tree = ExtremelyFastDecisionTreeClassifier()
+        self.tree = TreeClass()
 
         # master frame
         self.frame = tkinter.Frame(self.tk)

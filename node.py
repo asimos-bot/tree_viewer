@@ -1,5 +1,12 @@
 import tkinter
-from skmultiflow.trees.nodes import SplitNode
+import skmultiflow
+
+if( skmultiflow.__version__ == '0.4.1' ):
+    from skmultiflow.trees import HoeffdingTree
+    SplitNode = HoeffdingTree.SplitNode
+else:
+    from skmultiflow.trees.nodes import SplitNode
+
 from skmultiflow.rules.base_rule import Rule
 from operator import itemgetter
 import copy
