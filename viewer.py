@@ -9,11 +9,14 @@ class Viewer():
     def __init__(self, data_filename, labels_filename):
 
         # initialize tkinter
-        self.tk= Tk()
-
+        self.tk = tkinter.Tk()
+        self.tk.title("Extremely Fast Decision Tree visualizer")
+        
         # get database in a pandas dataframe
         data = pd.read_csv(data_filename)
         labels = pd.read_csv(labels_filename)
+
+        labels['y'] = labels['y'].astype('category')
 
         # create data provider, give the pandas dataframes as argument
         self.provider = DataProvider(x=data, y=labels)

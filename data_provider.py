@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 # get database in a datastream
 # keep track of which timestamp we are in
@@ -36,37 +37,41 @@ class DataProvider():
         # list of algorithms to call the 'train' method, so they know when to train from the current object
         self.algorithms = []
 
+        # number of steps to make when a button is pressed
+        self.steps=1
+
+    def change_steps(self, new_step_size):
+
+        self.steps = int(new_step_size)
+
     def next_object(self):
 
-        # check if we aren't already showing the last object
-        if( not self.x.shape[0] == self.timestamp ):
+        for i in range(self.steps):
 
-            self.increment_timestamp()
+            # check if we aren't already showing the last object
+            if( not self.x.shape[0] == self.timestamp ):
 
-            # train if we haven't trained anyone else or we currently showing the last object we trained on
-            if( self.last_train == None or self.timestamp == self.last_train ):
+                self.timestamp += 1
 
-                self.train()
+                # train if we haven't trained anyone else or we currently showing the last object we trained on
+                if( self.last_train == None or self.timestamp-1 == self.last_train ):
 
-                if( self.last_train == None ): self.last_train = -1
-                self.last_train += 1
+                    self.train()
+
+                    if( self.last_train == None ): self.last_train = -1
+                    self.last_train += 1
+
+                self.notify()
 
     def previous_object(self):
 
-        # check if we aren't already showing the first object
-        if( not self.timestamp <= 0 ):
+        for i in range(self.steps):
 
-            self.decrement_timestamp()
+            # check if we aren't already showing the first object
+            if( not self.timestamp <= 0 ):
 
-    def increment_timestamp(self):
-
-        self.timestamp += 1
-        self.notify()
-
-    def decrement_timestamp(self):
-
-        self.timestamp -= 1
-        self.notify()
+                self.timestamp -= 1
+                self.notify()
 
     def subscribe_to_listening_list(self, obj):
 
@@ -76,7 +81,7 @@ class DataProvider():
 
     def notify(self):
 
-        for obj in self.subscribers:
+        for obj in self.listeners:
             obj.notify()
     
     def subscribe_to_algorithm_list(self, obj):
@@ -95,7 +100,10 @@ class DataProvider():
         # raise error if haven't trained on any object yet
         if( self.timestamp == -1 ): raise ResourceWarning('Can\'t get object since DataProvider hasn\'t started fetching them')
 
-        return (self.x.iloc[[idx]].to_numpy(), self.y.iloc[[idx]].to_numpy())
+        return {
+                'x': self.x.iloc[[self.timestamp]].to_numpy(),
+                'y': self.y.iloc[[self.timestamp]].to_numpy()[0],
+                'timestamp': self.timestamp }
 
     def get_timestamp(self):
 

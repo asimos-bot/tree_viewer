@@ -5,12 +5,11 @@ kiwisolver==1.1.0
 matplotlib==3.0.3
 numpy==1.18.3
 pandas==0.24.2
-pkg-resources==0.0.0
 pyparsing==2.4.7
 python-dateutil==2.8.1
 pytz==2020.1
 scikit-learn==0.22.2.post1
-scikit-multiflow==0.4.1
+scikit-multiflow @ git+https://github.com/scikit-multiflow/scikit-multiflow@b0d4bd1a25843d8efbda713078bd4888e1b34dff
 scipy==1.4.1
 six==1.14.0
 sortedcontainers==2.1.0

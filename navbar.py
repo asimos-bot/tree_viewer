@@ -1,4 +1,4 @@
-from tkinter import Tk
+import tkinter
 from data_provider import DataProvider
 
 # builds navbar widget
@@ -12,7 +12,7 @@ class Navbar():
 
         if all( k in kwargs for k in ['tk', 'provider'] ):
 
-        return isinstance(kwargs['tk'], Tk) and isinstance(kwargs['provider'], DataProvider)
+            return isinstance(kwargs['tk'], tkinter.Tk) and isinstance(kwargs['provider'], DataProvider)
 
     def __init__(self, **kwargs):
 
@@ -23,7 +23,62 @@ class Navbar():
         self.tk = kwargs['tk']
         self.provider = kwargs['provider']
 
-        # build widget and give it to tk
-        self.build_widget(self.tk)
+        # subscribe to notification list (navbar's 'notify' method is called when timestamp change in 'DatsProvider')
+        self.provider.subscribe_to_listening_list(self)
 
-    def build_widget(self);
+        # where we save the label from the widget
+        self.label=None
+        
+        # where we save the scale that determine the step size
+        self.scale=None
+
+        # where we save the buttons from the widget
+        self.buttons = []
+
+        # build widget and give it to tk
+        self.build_widget()
+
+    def _build_object_label(self, master, timestamp, x, y):
+
+        self.label = tkinter.Label(master, text="x={}\ny={}\n{}".format(x, y, timestamp))
+        self.label.pack( side = tkinter.TOP )
+
+    def _build_scale(self, master):
+
+        self.scale = tkinter.Scale(master, orient='horizontal', from_=1, to=1000, command=self.provider.change_steps)
+        self.scale.pack( side = tkinter.BOTTOM )
+
+    def _build_buttons(self, master):
+
+        frame = tkinter.Frame(master)
+        frame.pack( side = tkinter.BOTTOM )
+
+        button_previous = tkinter.Button(frame, text='<-', command=self.provider.previous_object)
+        button_previous.pack( side = tkinter.LEFT )
+
+        button_next = tkinter.Button(frame, text='->', command=self.provider.next_object)
+        button_next.pack( side = tkinter.RIGHT )
+
+        self.buttons.append(button_previous)
+        self.buttons.append(button_next)
+    
+    def build_widget(self):
+
+        # get frame in the top
+        frame = tkinter.Frame(self.tk)
+        frame.pack( side = tkinter.TOP )
+
+        # build label in the center of the frame
+        self._build_object_label(frame, None, None, None)
+
+        # build scale that determine the size of the steps
+        self._build_scale(frame)
+
+        # build buttons just below the label
+        self._build_buttons(frame)
+
+    def notify(self):
+        
+        obj = self.provider.get_current_object()
+
+        self.label['text'] = "x={}\ny={}\n{}".format(obj['x'], obj['y'], obj['timestamp'])
