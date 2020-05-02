@@ -45,11 +45,11 @@ class Node():
 
         if( isinstance(node, SplitNode) ):
 
-            left = node.get_child(0)
+            left = node.get_child(1)
             if( left ):
                 self.children['left'] = Node(left)
 
-            right = node.get_child(1)
+            right = node.get_child(0)
 
             if( right ):
                 self.children['right'] = Node(right)

@@ -27,7 +27,7 @@ class Navbar():
         self.provider.subscribe_to_listening_list(self)
 
         # where we save the label from the widget
-        self.label=None
+        self.object_label=None
         
         # where we save the scale that determine the step size
         self.scale=None
@@ -35,18 +35,21 @@ class Navbar():
         # where we save the buttons from the widget
         self.buttons = []
 
+        # where we save the description label
+        self.description_label=None
+
         # build widget and give it to tk
         self.build_widget()
 
     def _build_object_label(self, master, timestamp, x, y):
 
-        self.label = tkinter.Label(master, text="x={}\ny={}\n{}".format(x, y, timestamp))
-        self.label.pack( side = tkinter.TOP )
+        self.object_label = tkinter.Label(master, text="x={}\ny={}\n{}".format(x, y, timestamp))
+        self.object_label.pack( side = tkinter.TOP )
 
     def _build_scale(self, master):
 
         self.scale = tkinter.Scale(master, orient='horizontal', from_=1, to=1000, command=self.provider.change_steps)
-        self.scale.pack( side = tkinter.BOTTOM )
+        self.scale.pack( side = tkinter.BOTTOM, fill = tkinter.X )
 
     def _build_buttons(self, master):
 
@@ -61,7 +64,15 @@ class Navbar():
 
         self.buttons.append(button_previous)
         self.buttons.append(button_next)
-    
+
+    def _build_label_description(self, master):
+
+        frame = tkinter.Frame(master)
+        frame.pack( side = tkinter.BOTTOM )
+
+        self.description_label = tkinter.Label(frame, text="If condition is True, proceed to the right branch. If False, proceed to the left.\nChange scale value to increase/decrease step size.")
+        self.description_label.pack( side = tkinter.BOTTOM )
+
     def build_widget(self):
 
         # get frame in the top
@@ -77,8 +88,11 @@ class Navbar():
         # build buttons just below the label
         self._build_buttons(frame)
 
+        # build tree description label
+        self._build_label_description(frame)
+
     def notify(self):
         
         obj = self.provider.get_current_object()
 
-        self.label['text'] = "x={}\ny={}\n{}".format(obj['x'], obj['y'], obj['timestamp'])
+        self.object_label['text'] = "x={}\ny={}\n{}".format(obj['x'], obj['y'], obj['timestamp'])

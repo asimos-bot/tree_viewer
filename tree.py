@@ -39,8 +39,8 @@ class Tree():
         self.tree = TreeClass()
 
         # master frame
-        self.frame = tkinter.Frame(self.tk)
-        self.frame.pack( side = tkinter.TOP )
+        self.frame = tkinter.Frame(self.tk, highlightthickness=5, highlightbackground='black', bd=0)
+        self.frame.pack( side = tkinter.TOP, fill = tkinter.BOTH )
 
     def _save_tree_state(self):
 
