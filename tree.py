@@ -61,6 +61,7 @@ class Tree():
 
         # train tree using current object
         obj = self.provider.get_current_object()
+
         self.tree.partial_fit(obj['x'], obj['y'])
 
         # save new tree
