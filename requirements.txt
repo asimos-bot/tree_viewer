@@ -10,6 +10,6 @@ python-dateutil==2.8.1
 pytz==2020.1
 scikit-learn==0.22.2.post1
 scikit-multiflow @ git+https://github.com/scikit-multiflow/scikit-multiflow@b0d4bd1a25843d8efbda713078bd4888e1b34dff
-scipy==1.4.1
+scipy==1.10.0
 six==1.14.0
 sortedcontainers==2.1.0
